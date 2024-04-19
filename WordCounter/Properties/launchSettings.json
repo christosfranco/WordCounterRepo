@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "WordCounter": {
+      "commandName": "Project",
+      "commandLineArgs": "file1.txt file2.txt"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}

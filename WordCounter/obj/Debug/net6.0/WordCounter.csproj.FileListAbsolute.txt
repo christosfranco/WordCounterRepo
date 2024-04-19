@@ -1,0 +1,15 @@
+C:\Users\Christian\source\repos\WordCounter\bin\Debug\net6.0\WordCounter.exe
+C:\Users\Christian\source\repos\WordCounter\bin\Debug\net6.0\WordCounter.deps.json
+C:\Users\Christian\source\repos\WordCounter\bin\Debug\net6.0\WordCounter.runtimeconfig.json
+C:\Users\Christian\source\repos\WordCounter\bin\Debug\net6.0\WordCounter.dll
+C:\Users\Christian\source\repos\WordCounter\bin\Debug\net6.0\WordCounter.pdb
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.csproj.AssemblyReference.cache
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.AssemblyInfoInputs.cache
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.AssemblyInfo.cs
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.csproj.CoreCompileInputs.cache
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.dll
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\refint\WordCounter.dll
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.pdb
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\WordCounter.genruntimeconfig.cache
+C:\Users\Christian\source\repos\WordCounter\obj\Debug\net6.0\ref\WordCounter.dll
