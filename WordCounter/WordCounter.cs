@@ -56,7 +56,7 @@ namespace WordCounter
             while (true)
             {
                 // Dequeue a job from the job queue
-                if (!jobQueue.TryDequeue(out Job job))
+                if (!jobQueue.TryDequeue(out Job? job))
                 {
                     break; // Exit worker loop if no more jobs
                 }
@@ -64,7 +64,7 @@ namespace WordCounter
                 switch (job.Type)
                 {
                     case JobType.FileRead:
-                        await ProcessFileAsync(job.FileName);
+                        await ProcessFileAsync(fileName: job.FileName);
                         break;
                     case JobType.WordProcess:
                         ProcessWords(job.Content);

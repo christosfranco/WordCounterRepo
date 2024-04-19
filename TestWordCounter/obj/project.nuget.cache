@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2o12KC+F9TJRXDCyxvy3WDPyJjv3j/5fI2lbUhoaXjVM8vUpEllipj/sUGgh5pgK3X0p7YnyyRYiS9wPPWWdZw==",
+  "dgSpecHash": "AUhO9+MDmgpsjz/M+O9XrBD5gG/h3pqahI05Jr/dInRWBKwaWyMq7DtDh9V9zzPiGaZDqxtBRTW7OfopgIL90Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Christian\\source\\repos\\TestWordCounter\\TestWordCounter.csproj",
+  "projectFilePath": "E:\\WordCounterRepo\\TestWordCounter\\TestWordCounter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Christian\\.nuget\\packages\\coverlet.collector\\3.1.2\\coverlet.collector.3.1.2.nupkg.sha512",
     "C:\\Users\\Christian\\.nuget\\packages\\microsoft.codecoverage\\17.3.2\\microsoft.codecoverage.17.3.2.nupkg.sha512",

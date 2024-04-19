@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Christian\\source\\repos\\WordCounter\\WordCounter.csproj": {}
+    "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Christian\\source\\repos\\WordCounter\\WordCounter.csproj": {
+    "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Christian\\source\\repos\\WordCounter\\WordCounter.csproj",
+        "projectUniqueName": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj",
         "projectName": "WordCounter",
-        "projectPath": "C:\\Users\\Christian\\source\\repos\\WordCounter\\WordCounter.csproj",
+        "projectPath": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj",
         "packagesPath": "C:\\Users\\Christian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Christian\\source\\repos\\WordCounter\\obj\\",
+        "outputPath": "E:\\WordCounterRepo\\WordCounter\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
