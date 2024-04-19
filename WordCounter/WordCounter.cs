@@ -21,6 +21,7 @@ namespace WordCounter
         public string? Content { get; set; }
     }
 
+
     public class WordCounter
     {
 
@@ -51,6 +52,7 @@ namespace WordCounter
             }
 
             // Wait for all worker tasks to complete
+            
             await Task.WhenAll(workerTasks);
 
             // All workers have completed processing
@@ -71,6 +73,8 @@ namespace WordCounter
             while (true)
             {
                 // Dequeue a job from the job queue
+                // TODO: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
+
                 if (!jobQueue.TryDequeue(out Job? job))
                 {
                     break; // Exit worker loop if no more jobs
