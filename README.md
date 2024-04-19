@@ -21,18 +21,20 @@ Given multiple text files, will count the occurrences of each unique word in the
 ```
 
 # Compile and run
+Dotnet version: dotnet-sdk-6.x
+
 Set-up and compile:
 ```
 dotnet build --configuration Release --no-restore
-dotnet run [FILES]
+dotnet run  --configuration Release [FILES]
 ```
 Example:
 ```
-dotnet run ..\TestWordCounter\TestFiles\file1.txt ..\TestWordCounter\TestFiles\file2.txt 
+dotnet run --configuration Release ..\TestWordCounter\TestFiles\file1.txt ..\TestWordCounter\TestFiles\file2.txt 
 ```
 # Run build-in tests:
 ```
-dotnet test --no-restore --verbosity normal
+dotnet test --configuration Release --no-restore --verbosity normal
 ```
 
 

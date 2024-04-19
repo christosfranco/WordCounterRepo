@@ -1,35 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "E:\\WordCounterRepo\\TestWordCounter\\TestWordCounter.csproj": {}
+    "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/TestWordCounter.csproj": {}
   },
   "projects": {
-    "E:\\WordCounterRepo\\TestWordCounter\\TestWordCounter.csproj": {
+    "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/TestWordCounter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\WordCounterRepo\\TestWordCounter\\TestWordCounter.csproj",
+        "projectUniqueName": "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/TestWordCounter.csproj",
         "projectName": "TestWordCounter",
-        "projectPath": "E:\\WordCounterRepo\\TestWordCounter\\TestWordCounter.csproj",
-        "packagesPath": "C:\\Users\\Christian\\.nuget\\packages\\",
-        "outputPath": "E:\\WordCounterRepo\\TestWordCounter\\obj\\",
+        "projectPath": "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/TestWordCounter.csproj",
+        "packagesPath": "/home/christos/.nuget/packages/",
+        "outputPath": "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/christos/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj": {
-                "projectPath": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj"
+              "/home/christos/Simcorp/WordCounterRepo/WordCounter/WordCounter.csproj": {
+                "projectPath": "/home/christos/Simcorp/WordCounterRepo/WordCounter/WordCounter.csproj"
               }
             }
           }
@@ -81,28 +79,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.421/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj": {
+    "/home/christos/Simcorp/WordCounterRepo/WordCounter/WordCounter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj",
+        "projectUniqueName": "/home/christos/Simcorp/WordCounterRepo/WordCounter/WordCounter.csproj",
         "projectName": "WordCounter",
-        "projectPath": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj",
-        "packagesPath": "C:\\Users\\Christian\\.nuget\\packages\\",
-        "outputPath": "E:\\WordCounterRepo\\WordCounter\\obj\\",
+        "projectPath": "/home/christos/Simcorp/WordCounterRepo/WordCounter/WordCounter.csproj",
+        "packagesPath": "/home/christos/.nuget/packages/",
+        "outputPath": "/home/christos/Simcorp/WordCounterRepo/WordCounter/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/christos/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -136,7 +132,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.421/RuntimeIdentifierGraph.json"
         }
       }
     }

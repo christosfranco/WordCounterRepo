@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 namespace TestWordCounter { 
     public class UnitTests
     {
-        static string NavigateUpToTargetDirectory(string baseDir, int levels)
+        static string? NavigateUpToTargetDirectory(string baseDir, int levels)
         {
-            string currentDir = baseDir;
+            string? currentDir = baseDir;
 
             // Navigate up multiple levels to reach the desired parent directory
             for (int i = 0; i < levels; i++)
@@ -60,7 +60,7 @@ namespace TestWordCounter {
             string[] fullFilePaths = new string[filePaths.Length];
             for (int i = 0; i < filePaths.Length; i++)
             {
-                fullFilePaths[i] = System.IO.Path.Combine(base_dir, "TestFiles\\" , filePaths[i]);
+                fullFilePaths[i] = System.IO.Path.Combine(base_dir, "TestFiles" , filePaths[i]);
             }
 
             var wordCounter = new WordCounter.WordCounter();

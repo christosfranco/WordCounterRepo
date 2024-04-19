@@ -64,11 +64,19 @@ namespace WordCounter
                 switch (job.Type)
                 {
                     case JobType.FileRead:
-                        await ProcessFileAsync(fileName: job.FileName);
-                        break;
+                        if (job.FileName == null) {
+                            break;
+                        } else {
+                            await ProcessFileAsync(job.FileName);
+                            break;
+                        }
                     case JobType.WordProcess:
-                        ProcessWords(job.Content);
-                        break;
+                        if (job.Content == null) {
+                            break;
+                        } else {
+                            ProcessWords(job.Content);
+                            break;
+                        }
                 }
             }
         }
