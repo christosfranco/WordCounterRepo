@@ -29,6 +29,12 @@ namespace WordCounter
         private readonly ConcurrentQueue<Job> jobQueue = new ConcurrentQueue<Job>();
         private readonly int numWorkers = 8;
 
+        /// <summary>
+        /// Asynchronously processes files by reading them in chunks and enqueuing the content into a job queue.
+        /// Workers then read the enqueued content chunks from the queue and process them further.
+        /// </summary>
+        /// <param name="fileNames">An array of file names to be processed.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task ProcessFilesAsync(IEnumerable<string> fileNames)
         {
             // Enqueue file read jobs into the job queue
@@ -52,6 +58,14 @@ namespace WordCounter
             PrintWordCounts();
         }
 
+        /// <summary>
+        /// Asynchronously dequeues jobs from the job queue and processes them based on the job type.
+        /// </summary>
+        /// <remarks>
+        /// This method continuously dequeues jobs from the job queue and executes specific actions based on the job type.
+        /// Supported job types include reading files (JobType.FileRead) and processing file content (JobType.WordProcess).
+        /// </remarks>
+        /// <returns>A task representing the asynchronous operation of the worker.</returns>
         private async Task WorkerAsync()
         {
             while (true)
@@ -82,12 +96,17 @@ namespace WordCounter
             }
         }
 
-        // DONE enqueue chunks of file instaed of the whole file. So it needs to read x amount of bytes, enqueue that content, then continue to next chunk of the file
+        /// <summary>
+        /// Asynchronously reads a file in chunks and enqueues the file content for word processing.
+        /// </summary>
+        /// <param name="fileName">The name of the file to be processed.</param>
+        /// <returns>A task representing the asynchronous operation of processing the file.</returns>
         private async Task ProcessFileAsync(string fileName)
         {
             try
             {
                 // Open the file for reading
+                // DONE enqueue chunks of file instaed of the whole file. So it needs to read x amount of bytes, enqueue that content, then continue to next chunk of the file
                 using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
                     byte[] buffer = new byte[CHUNKSIZE];
@@ -111,18 +130,19 @@ namespace WordCounter
             }
         }
 
+        /// <summary>
+        /// Processes a string of text by splitting it into words, removing non-alphanumeric characters,
+        /// converting to lowercase, and updating the word count in a global dictionary.
+        /// </summary>
+        /// <param name="content">The input text content to be processed.</param>
+        /// <returns>void</returns>
         private void ProcessWords(string content)
         {
-            // Split text into words by removing non-alphanumeric characters
-            // converting to lowercase
             string[] words = Regex.Split(content, @"\W+")
                                   .Where(word => !string.IsNullOrEmpty(word))
-                                  .Select(word => word.ToLower())
+                                //   .Select(word => word.ToLower())
                                   .ToArray();
 
-            // DONE: can this be optimized by making a local dictionary, then doing 1 update to global dictionary?
-            // did save a bit of time
-            // Update word count dictionary
             // Create a local dictionary to accumulate word counts
             Dictionary<string, int> localWordCount = new Dictionary<string, int>();
 
@@ -146,6 +166,10 @@ namespace WordCounter
             }
         }
 
+        /// <summary>
+        /// Prints the word counts stored in the global dictionary to the console, sorted by word (key).
+        /// Format: "Count: Word", eg. "2: hello"
+        /// </summary>
         public void PrintWordCounts()
         {
             foreach (var pair in wordCount.OrderBy(pair => pair.Key))

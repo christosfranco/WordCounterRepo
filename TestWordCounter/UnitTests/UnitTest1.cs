@@ -88,7 +88,6 @@ namespace TestWordCounter {
 
             // Assert
             var wordCounts = wordCounter.GetWordCounts();
-            wordCounter.PrintWordCounts();
             Assert.That(wordCounts["hello"], Is.EqualTo(3));
             Assert.That(wordCounts["world"], Is.EqualTo(2));
             Assert.That(wordCounts["goodbye"], Is.EqualTo(1));
