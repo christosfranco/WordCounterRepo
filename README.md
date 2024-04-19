@@ -47,3 +47,9 @@ To run the github actions pipeline:
 ```
 sudo act -W .github/workflows/github-actions-build-and-test.yml
 ```
+
+# Summary of system
+![Alt Text](diagram-export-4-19-2024-4_38_36-PM.png)
+
+
+
