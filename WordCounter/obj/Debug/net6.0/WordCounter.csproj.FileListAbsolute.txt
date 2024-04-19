@@ -58,3 +58,5 @@ E:\WordCounterRepo\WordCounter\obj\Debug\net6.0\refint\WordCounter.dll
 E:\WordCounterRepo\WordCounter\obj\Debug\net6.0\WordCounter.pdb
 E:\WordCounterRepo\WordCounter\obj\Debug\net6.0\WordCounter.genruntimeconfig.cache
 E:\WordCounterRepo\WordCounter\obj\Debug\net6.0\ref\WordCounter.dll
+E:\WordCounterRepo\WordCounter\bin\Debug\net6.0\Bogus.dll
+E:\WordCounterRepo\WordCounter\obj\Debug\net6.0\WordCounter.csproj.CopyComplete

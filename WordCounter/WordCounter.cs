@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace WordCounter
 {
@@ -24,6 +20,7 @@ namespace WordCounter
 
     public class WordCounter
     {
+        // TODO: preanalyze hardware / system / file size distribution
         readonly int CHUNKSIZE = 1024 * 1024;
         private readonly ConcurrentDictionary<string, int> wordCount = new ConcurrentDictionary<string, int>();
         private readonly ConcurrentQueue<Job> jobQueue = new ConcurrentQueue<Job>();
@@ -81,21 +78,15 @@ namespace WordCounter
             {
                 // Dequeue a job from the job queue
                 // DONE: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
-
-                bool allFilesQueued = false;
+                Job? job;
                 lock (this.filesProcessedLock)
                 {
                     // Console.WriteLine($"Processed {this.filesProcessed}" );
                     // Console.WriteLine(this.totalFiles);
-                    if (this.filesProcessed >= this.totalFiles)
+                    if (!jobQueue.TryDequeue(out job) && this.filesProcessed >= this.totalFiles)
                     {
-                        allFilesQueued = true; 
+                        break;
                     }
-                }
-                // terminate worker 
-                if (!jobQueue.TryDequeue(out Job? job) && allFilesQueued)
-                {
-                    break;
                 }
 
                 switch (job?.Type)
@@ -117,7 +108,7 @@ namespace WordCounter
                             // TODO log error and continue to next file
                             break;
                         } else {
-                            ProcessWords(job.Content);
+                            await ProcessWords(job.Content);
                             break;
                         }
                 }
@@ -140,7 +131,8 @@ namespace WordCounter
                 int bytesRead;
 
                 // Read the file in chunks until the end is reached
-                while ((bytesRead = await fileStream.ReadAsync(buffer)) > 0)
+                // TODO check that it splits on space such that words dont get split
+                while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     // Convert the read bytes to string (assuming UTF-8 encoding)
                     // TODO: maybe directly parse the bytes instead of converting to string first?
@@ -158,11 +150,11 @@ namespace WordCounter
 
         /// <summary>
         /// Processes a string of text by splitting it into words, removing non-alphanumeric characters,
-        /// converting to lowercase, and updating the word count in a global dictionary.
+        /// converting to lowercase, and updating the word count in a global concurrent dictionary.
         /// </summary>
         /// <param name="content">The input text content to be processed.</param>
         /// <returns>void</returns>
-        private void ProcessWords(string content)
+        private async Task ProcessWords(string content)
         {
             string[] words = Regex.Split(content, @"\W+")
                                   .Where(word => !string.IsNullOrEmpty(word))
@@ -199,12 +191,16 @@ namespace WordCounter
         public void PrintWordCounts()
         {
             // TODO: dont orderby?
-            foreach (var pair in wordCount.OrderBy(pair => pair.Key))
+            //foreach (var pair in wordCount.OrderBy(pair => pair.Key))
+            
+            foreach (var pair in wordCount.OrderByDescending(pair => pair.Value))
             {
                 Console.WriteLine($"{pair.Value}: {pair.Key}");
             }
         }
-
+        /// <summary>
+        /// Gets the concurrent dictionary for purpose of testing or further processing.
+        /// </summary>
         public ConcurrentDictionary<string, int> GetWordCounts()
         {
             return this.wordCount; // Return the wordCount dictionary

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "8bivMYMC+OAtGIoGmUUmlgKsAxe3idpi3iqAilWdBepPKd37ApeUHfkUGeFFqqSV+3W5fv/XJ6lNF8gfmcnnrw==",
+  "dgSpecHash": "TsXYxmFWKiQ8a6V1lw6+3I+g7ihsXc22NI1pvSRuNwh2z+wmZbmE3X6fIBs1GGFp62s0WElelpDaMEqhWNBibA==",
   "success": true,
   "projectFilePath": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Christian\\.nuget\\packages\\bogus\\35.5.0\\bogus.35.5.0.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -417,3 +417,4 @@ E:\WordCounterRepo\TestWordCounter\obj\Debug\net6.0\refint\TestWordCounter.dll
 E:\WordCounterRepo\TestWordCounter\obj\Debug\net6.0\TestWordCounter.pdb
 E:\WordCounterRepo\TestWordCounter\obj\Debug\net6.0\TestWordCounter.genruntimeconfig.cache
 E:\WordCounterRepo\TestWordCounter\obj\Debug\net6.0\ref\TestWordCounter.dll
+E:\WordCounterRepo\TestWordCounter\bin\Debug\net6.0\Bogus.dll

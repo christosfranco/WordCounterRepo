@@ -4,30 +4,6 @@ namespace TestWordCounter
 {
     public class UnitTests
     {
-        static string? NavigateUpToTargetDirectory(string baseDir, int levels)
-        {
-            string? currentDir = baseDir;
-
-            // Navigate up multiple levels to reach the desired parent directory
-            for (int i = 0; i < levels; i++)
-            {
-                currentDir = Directory.GetParent(currentDir)?.FullName;
-
-                if (currentDir == null)
-                {
-                    Console.WriteLine($"Failed to navigate up {levels} levels.");
-                    return null;
-                }
-            }
-
-            return currentDir;
-        }
-        static bool IsAbsolutePath(string? path)
-        {
-            // Check if the path is rooted (absolute path)
-            // Path.IsPathRooted returns true if the path is an absolute path
-            return !string.IsNullOrEmpty(path) && Path.IsPathRooted(path);
-        }
         [SetUp]
         public void Setup()
         {
@@ -41,9 +17,9 @@ namespace TestWordCounter
             string assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             string? system_dir = Path.GetDirectoryName(assemblyLocation);
-            Assert.That(IsAbsolutePath(system_dir), Is.EqualTo(true));
+            Assert.That(IOHelpers.IsAbsolutePath(system_dir), Is.EqualTo(true));
             // Navigate up multiple levels to reach the desired parent directory
-            string base_dir = NavigateUpToTargetDirectory(system_dir, 3); // Navigate up 3 levels
+            string base_dir = IOHelpers.NavigateUpToTargetDirectory(system_dir, 3); // Navigate up 3 levels
 
             Console.WriteLine(base_dir);
             // Specify the relative file paths within the base directory
@@ -71,13 +47,5 @@ namespace TestWordCounter
                 Assert.That(wordCounts["again"], Is.EqualTo(1));
             });
         }
-    }
-
-
-
-    // Mock interface for file reading
-    public interface IFileReader
-    {
-        string ReadAllText(string path);
     }
 }
