@@ -178,6 +178,7 @@ namespace WordCounter
             }
 
             // Merge local word counts into the global word count dictionary
+            // TODO: lock for the whole loop to only do 1 lock/unlock, then do an async task to allow thread to pool if blocked
             foreach (var entry in localWordCount)
             {
                 wordCount.AddOrUpdate(entry.Key, entry.Value, (key, oldValue) => oldValue + entry.Value);
