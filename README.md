@@ -49,7 +49,7 @@ sudo act -W .github/workflows/github-actions-build-and-test.yml
 ```
 
 # Summary of system
-![Alt Text](diagram-export-4-19-2024-4_38_36-PM.png)
+![Alt Text](diagram-export-4-19-2024-4_41_03-PM.png)
 
 
 
