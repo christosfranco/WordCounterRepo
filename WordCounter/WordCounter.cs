@@ -135,7 +135,6 @@ namespace WordCounter
                 while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     // Convert the read bytes to string (assuming UTF-8 encoding)
-                    // TODO: maybe directly parse the bytes instead of converting to string first?
                     string contentChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                     // Enqueue word processing job with file content chunk

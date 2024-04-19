@@ -54,7 +54,6 @@ namespace TestWordCounter
             // Arrange
             int numFiles = 2; // Number of large files
 
-            // Define word frequencies for custom Lorem Ipsum generation
             var wordFrequencies = new Dictionary<string, int>
                 {
                     { "Lorem", 3 },
@@ -63,7 +62,6 @@ namespace TestWordCounter
                     { "sit", 4 },
                     { "amet", 3 },
                     { "consectetur", 2 }
-                    // Add more words and frequencies as needed
                 };
 
             // Create large text files
@@ -106,14 +104,13 @@ namespace TestWordCounter
             }
         }
 
-
+        // TODO test with insanely large files. Seems that some memory is lost (maybe due to byte split when reading chunks)?
         [Test]
         public async Task ProcessFilesAsync_CountsWordsCorrectly_Bigger_Files()
         {
             // Arrange
             int numFiles = 200; // Number of large files
 
-            // Define word frequencies for custom Lorem Ipsum generation
             var wordFrequencies = new Dictionary<string, int>
                 {
                     { "Lorem", 3000 },
@@ -122,7 +119,6 @@ namespace TestWordCounter
                     { "sit", 4000 },
                     { "amet", 3000 },
                     { "consectetur", 2000 }
-                    // Add more words and frequencies as needed
                 };
 
             // Create large text files
@@ -133,10 +129,10 @@ namespace TestWordCounter
                 // Create an instance of WordCounter
                 var wordCounter = new WordCounter.WordCounter();
 
-                // Act: Process large files asynchronously
+                // Actt Process large files asynchronously
                 await wordCounter.ProcessFilesAsync(filePaths);
 
-                // Assert: Check word counts
+                // Assert Check word counts
                 var wordCounts = wordCounter.GetWordCounts();
                 Assert.Multiple(() =>
                 {
@@ -150,7 +146,7 @@ namespace TestWordCounter
             }
             finally
             {
-                // Cleanup: Delete temporary files after testing
+                // cleanup dlete temporary files after testing
                 foreach (var filePath in filePaths)
                 {
                     try
