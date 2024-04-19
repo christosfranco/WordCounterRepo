@@ -1,47 +1,11 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {
-      "Bogus/35.5.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/Bogus.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Bogus.dll": {
-            "related": ".xml"
-          }
-        }
-      }
-    }
+    "net8.0": {}
   },
-  "libraries": {
-    "Bogus/35.5.0": {
-      "sha512": "iCXszbIvvxgfb01bPe/s3R6pQSKX6rpcQWqM7wqDt+lsMogR6fkSWBwqOxLpdXmMB7mgZNNk2hm2M1shoIiekA==",
-      "type": "package",
-      "path": "bogus/35.5.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "bogus.35.5.0.nupkg.sha512",
-        "bogus.nuspec",
-        "lib/net40/Bogus.dll",
-        "lib/net40/Bogus.xml",
-        "lib/net6.0/Bogus.dll",
-        "lib/net6.0/Bogus.xml",
-        "lib/netstandard1.3/Bogus.dll",
-        "lib/netstandard1.3/Bogus.xml",
-        "lib/netstandard2.0/Bogus.dll",
-        "lib/netstandard2.0/Bogus.xml"
-      ]
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    "net8.0": [
-      "Bogus >= 35.5.0"
-    ]
+    "net8.0": []
   },
   "packageFolders": {
     "C:\\Users\\Christian\\.nuget\\packages\\": {}
@@ -86,12 +50,6 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
-        "dependencies": {
-          "Bogus": {
-            "target": "Package",
-            "version": "[35.5.0, )"
-          }
-        },
         "imports": [
           "net461",
           "net462",
