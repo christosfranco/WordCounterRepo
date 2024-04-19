@@ -24,14 +24,13 @@ namespace WordCounter
 
     public class WordCounter
     {
-
-        int CHUNKSIZE = 1024 * 1024;
+        readonly int CHUNKSIZE = 1024 * 1024;
         private readonly ConcurrentDictionary<string, int> wordCount = new ConcurrentDictionary<string, int>();
         private readonly ConcurrentQueue<Job> jobQueue = new ConcurrentQueue<Job>();
         private readonly int numWorkers = 8;
 
         // Lock for filesProcessed
-        private object filesProcessedLock = new object();
+        private readonly object filesProcessedLock = new object();
         private int totalFiles = 0; 
         private int filesProcessed = 0;
 
@@ -82,8 +81,7 @@ namespace WordCounter
             {
                 // Dequeue a job from the job queue
                 // DONE: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
-                Job? job;
-                
+
                 bool allFilesQueued = false;
                 lock (this.filesProcessedLock)
                 {
@@ -95,7 +93,7 @@ namespace WordCounter
                     }
                 }
                 // terminate worker 
-                if (!jobQueue.TryDequeue(out job) && allFilesQueued)
+                if (!jobQueue.TryDequeue(out Job? job) && allFilesQueued)
                 {
                     break;
                 }
@@ -110,7 +108,7 @@ namespace WordCounter
                             await ProcessFileAsync(job.FileName);
                             // update the filesProcessed class var 
                             lock (this.filesProcessedLock) {
-                                this.filesProcessed = this.filesProcessed +1;
+                                this.filesProcessed++;
                             }
                             break;
                         }
@@ -137,21 +135,19 @@ namespace WordCounter
             {
                 // Open the file for reading
                 // DONE enqueue chunks of file instaed of the whole file. So it needs to read x amount of bytes, enqueue that content, then continue to next chunk of the file
-                using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                byte[] buffer = new byte[CHUNKSIZE];
+                int bytesRead;
+
+                // Read the file in chunks until the end is reached
+                while ((bytesRead = await fileStream.ReadAsync(buffer)) > 0)
                 {
-                    byte[] buffer = new byte[CHUNKSIZE];
-                    int bytesRead;
+                    // Convert the read bytes to string (assuming UTF-8 encoding)
+                    // TODO: maybe directly parse the bytes instead of converting to string first?
+                    string contentChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                    // Read the file in chunks until the end is reached
-                    while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                    {
-                        // Convert the read bytes to string (assuming UTF-8 encoding)
-                        // TODO: maybe directly parse the bytes instead of converting to string first?
-                        string contentChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-                        // Enqueue word processing job with file content chunk
-                        jobQueue.Enqueue(new Job { Type = JobType.WordProcess, Content = contentChunk });
-                    }                    
+                    // Enqueue word processing job with file content chunk
+                    jobQueue.Enqueue(new Job { Type = JobType.WordProcess, Content = contentChunk });
                 }
             }
             catch (Exception ex)
@@ -202,6 +198,7 @@ namespace WordCounter
         /// </summary>
         public void PrintWordCounts()
         {
+            // TODO: dont orderby?
             foreach (var pair in wordCount.OrderBy(pair => pair.Key))
             {
                 Console.WriteLine($"{pair.Value}: {pair.Key}");

@@ -1,14 +1,7 @@
 using NUnit.Framework.Internal;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
-
-
-
-namespace TestWordCounter { 
+namespace TestWordCounter
+{
     public class UnitTests
     {
         static string? NavigateUpToTargetDirectory(string baseDir, int levels)
@@ -65,33 +58,18 @@ namespace TestWordCounter {
 
             var wordCounter = new WordCounter.WordCounter();
 
-
-            // wordCounter.ProcessFiles(args);
-
-            // Simulate file contents
-            // var fileContents = new Dictionary<string, string>
-            // {
-            //     { "file1.txt", "hello world hello" },
-            //     { "file2.txt", "goodbye world" },
-            //     { "file3.txt", "hello again" }
-            // };
-
-            // // Mock file reading behavior
-            // foreach (var filePath in filePaths)
-            // {
-            //     mockFileReader.Setup(fr => fr.ReadAllText(filePath))
-            //                   .Returns(fileContents[filePath]);
-            // }
-
             // Act
             await wordCounter.ProcessFilesAsync(fullFilePaths);
 
             // Assert
             var wordCounts = wordCounter.GetWordCounts();
-            Assert.That(wordCounts["hello"], Is.EqualTo(3));
-            Assert.That(wordCounts["world"], Is.EqualTo(2));
-            Assert.That(wordCounts["goodbye"], Is.EqualTo(1));
-            Assert.That(wordCounts["again"], Is.EqualTo(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(wordCounts["hello"], Is.EqualTo(3));
+                Assert.That(wordCounts["world"], Is.EqualTo(2));
+                Assert.That(wordCounts["goodbye"], Is.EqualTo(1));
+                Assert.That(wordCounts["again"], Is.EqualTo(1));
+            });
         }
     }
 
