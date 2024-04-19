@@ -16,7 +16,7 @@ namespace TestWordCounter
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
                     // Generate large random text content (for demonstration purposes)
-                    string content = GenerateLoremIpsum(wordFrequencies); // Convert KB to bytes
+                    string content = GenerateLoremIpsum(wordFrequencies); 
                     writer.Write(content);
                 }
                 filePaths[i] = filePath;

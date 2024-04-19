@@ -21,7 +21,7 @@ Given multiple text files, will count the occurrences of each unique word in the
 ```
 
 # Compile and run
-Dotnet version: dotnet-sdk-6.x
+Dotnet version: dotnet-sdk-8.0.204
 
 Set-up and compile:
 ```

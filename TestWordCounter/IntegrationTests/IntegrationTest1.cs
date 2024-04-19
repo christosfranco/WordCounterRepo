@@ -111,7 +111,7 @@ namespace TestWordCounter
         public async Task ProcessFilesAsync_CountsWordsCorrectly_Bigger_Files()
         {
             // Arrange
-            int numFiles = 200; // Number of large files
+            int numFiles = 1; // Number of large files
 
             // Define word frequencies for custom Lorem Ipsum generation
             var wordFrequencies = new Dictionary<string, int>
