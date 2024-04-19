@@ -22,17 +22,18 @@ jobs:
         # os: [windows-latest]  #, windows-latest, macOS-latest]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
       
     
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Change working directory to WordCounter
       run: |
         cd WordCounter      
         ls
+        dotnet restore
         dotnet test --no-restore --verbosity normal
         dotnet build --configuration Release --no-restore
         dotnet test --configuration Release --no-restore --verbosity normal
