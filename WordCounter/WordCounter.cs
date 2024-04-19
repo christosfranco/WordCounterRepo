@@ -30,6 +30,11 @@ namespace WordCounter
         private readonly ConcurrentQueue<Job> jobQueue = new ConcurrentQueue<Job>();
         private readonly int numWorkers = 8;
 
+        // Lock for filesProcessed
+        private object filesProcessedLock = new object();
+        private int totalFiles = 0; 
+        private int filesProcessed = 0;
+
         /// <summary>
         /// Asynchronously processes files by reading them in chunks and enqueuing the content into a job queue.
         /// Workers then read the enqueued content chunks from the queue and process them further.
@@ -38,6 +43,9 @@ namespace WordCounter
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task ProcessFilesAsync(IEnumerable<string> fileNames)
         {
+            this.totalFiles = fileNames.Count();
+            // Console.WriteLine(this.totalFiles);
+
             // Enqueue file read jobs into the job queue
             foreach (var fileName in fileNames)
             {
@@ -73,24 +81,42 @@ namespace WordCounter
             while (true)
             {
                 // Dequeue a job from the job queue
-                // TODO: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
-
-                if (!jobQueue.TryDequeue(out Job? job))
+                // DONE: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
+                Job? job;
+                
+                bool allFilesQueued = false;
+                lock (this.filesProcessedLock)
                 {
-                    break; // Exit worker loop if no more jobs
+                    // Console.WriteLine($"Processed {this.filesProcessed}" );
+                    // Console.WriteLine(this.totalFiles);
+                    if (this.filesProcessed >= this.totalFiles)
+                    {
+                        allFilesQueued = true; 
+                    }
+                }
+                // terminate worker 
+                if (!jobQueue.TryDequeue(out job) && allFilesQueued)
+                {
+                    break;
                 }
 
-                switch (job.Type)
+                switch (job?.Type)
                 {
                     case JobType.FileRead:
                         if (job.FileName == null) {
+                            // TODO log error and continue to next file
                             break;
                         } else {
                             await ProcessFileAsync(job.FileName);
+                            // update the filesProcessed class var 
+                            lock (this.filesProcessedLock) {
+                                this.filesProcessed = this.filesProcessed +1;
+                            }
                             break;
                         }
                     case JobType.WordProcess:
                         if (job.Content == null) {
+                            // TODO log error and continue to next file
                             break;
                         } else {
                             ProcessWords(job.Content);
@@ -125,7 +151,7 @@ namespace WordCounter
 
                         // Enqueue word processing job with file content chunk
                         jobQueue.Enqueue(new Job { Type = JobType.WordProcess, Content = contentChunk });
-                    }
+                    }                    
                 }
             }
             catch (Exception ex)
