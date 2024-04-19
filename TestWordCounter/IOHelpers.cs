@@ -1,7 +1,4 @@
-﻿using Bogus;
-using Bogus.DataSets;
-
-namespace TestWordCounter
+﻿namespace TestWordCounter
 {
     public static class IOHelpers
     {
@@ -18,6 +15,8 @@ namespace TestWordCounter
                     // Generate large random text content (for demonstration purposes)
                     string content = GenerateLoremIpsum(wordFrequencies); 
                     writer.Write(content);
+                    writer.AutoFlush = true;
+                    writer.Close();
                 }
                 filePaths[i] = filePath;
             }
@@ -54,11 +53,8 @@ namespace TestWordCounter
 
         public static string GenerateLoremIpsum(Dictionary<string, int> wordFrequencies)
         {
-            // Create a Faker :) instance for generating Lorem Ipsum text
-            var lorem = new Lorem();
-
             // Get the list of words from the Lorem Ipsum text
-            var words = lorem.Words().ToList();
+            List<string> words = new List<string> { };
 
             // Adjust the frequencies of specific words based on input dictionary
             foreach (var kvp in wordFrequencies)
