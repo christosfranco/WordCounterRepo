@@ -41,9 +41,9 @@ dotnet test --configuration Release --no-restore --verbosity normal
 # Utilizing testing pipeline
 For documentation and purpose of the code that I have written for other developers looking at it. (aswell as myself when i return to the codebase)
 Compile, run, and test the solution. Pipeline can also be ran directly through the github actions interface on [link](https://github.com/christosfranco/File_Word_Counter/actions)
-Or through a local program such as "act".
+Or through a local program such as "act" (macOS/linux) "act-cli" (windows).
 
 To run the github actions pipeline:
 ```
-act 
+sudo act -W .github/workflows/github-actions-build-and-test.yml
 ```
