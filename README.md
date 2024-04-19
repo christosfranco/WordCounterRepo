@@ -28,10 +28,15 @@ Set-up and compile:
 dotnet build --configuration Release --no-restore
 dotnet run  --configuration Release [FILES]
 ```
-Example:
+Example Windows:
 ```
 dotnet run --configuration Release ..\TestWordCounter\TestFiles\file1.txt ..\TestWordCounter\TestFiles\file2.txt 
 ```
+Example Unix:
+```
+dotnet run --configuration Release ../TestWordCounter/TestFiles/file1.txt ../TestWordCounter/TestFiles/file2.txt 
+```
+
 # Run build-in tests:
 ```
 dotnet test --configuration Release --no-restore --verbosity normal
