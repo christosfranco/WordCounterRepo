@@ -134,6 +134,7 @@ namespace WordCounter
                 // TODO check that it splits on space such that words dont get split
                 while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
+                    // TODO: trailing bytes cannot be allowed to be non-zero, stop beforehand or rollback the fileStream pointer
                     // Convert the read bytes to string (assuming UTF-8 encoding)
                     string contentChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
