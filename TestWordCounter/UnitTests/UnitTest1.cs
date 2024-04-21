@@ -1,7 +1,6 @@
-using NUnit.Framework.Internal;
-
-namespace TestWordCounter
+namespace TestWordCounter.UnitTests
 {
+    [TestFixture]
     public class UnitTests
     {
         [SetUp]

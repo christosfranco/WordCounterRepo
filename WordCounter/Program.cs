@@ -2,11 +2,11 @@
 
 namespace WordCounter;
 
-internal static class Program
+public static class Program
 {
-    private static async Task<int> Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
-        return await new AppRunner<WordCounterCommands>().RunAsync(args);
-
+        var app = new AppRunner<WordCounterCommands>();
+        return await app.RunAsync(args);
     }
 }

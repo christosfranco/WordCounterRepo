@@ -1,7 +1,7 @@
-using NUnit.Framework.Internal;
-
-namespace TestWordCounter
+namespace TestWordCounter.IntegrationTests
 {
+
+    [TestFixture]
     public class IntegrationTests
     {
         [SetUp]
@@ -266,7 +266,7 @@ namespace TestWordCounter
         
         [Test]
         [Category("Integration")]
-        public async Task ProcessFilesAsync_CountsWordsCorrectly_20_000_Words()
+        public async Task ProcessFilesAsync_CountsWordsCorrectly_200_Files_20_000_Words()
         {
             // Arrange
             int numFiles = 200; // Number of large files
@@ -320,6 +320,9 @@ namespace TestWordCounter
                 }
             }
         }
+        
+        
+        
         
     }
 

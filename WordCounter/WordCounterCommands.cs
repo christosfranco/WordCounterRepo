@@ -1,10 +1,9 @@
 namespace WordCounter;
 using CommandDotNet;
 
-
-public abstract class WordCounterCommands
+public class WordCounterCommands
 {
-    
+
     [DefaultCommand]
     public async Task<int> ProcessFiles(
         [Operand(Description = "File names to be processed")] List<string> fileNames,
@@ -15,7 +14,7 @@ public abstract class WordCounterCommands
         [Option(Description = "Log file path")] string logFile = "log.txt"
     )
     {
-        if ( fileNames.Count == 0)
+        if (fileNames == null || fileNames.Count == 0)
         {
             Console.WriteLine("No file names specified.");
             return 1; // Return error code
