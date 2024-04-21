@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -17,19 +18,32 @@ namespace WordCounter
         public string? Content { get; set; }
     }
 
+    public enum QueueType
+    {
+        ConcurrentQueue,
+    }
 
-    public class WordCounter
+    public class WordCounter(QueueType queueType = QueueType.ConcurrentQueue, int numWorkers = 8, int chunkSize = 4096, int longestWord = 100, string logFile = "log.txt")
     {
         // TODO: preanalyze hardware / system / file size distribution
-        readonly int CHUNKSIZE = 1024 * 1024;
-        private readonly ConcurrentDictionary<string, int> wordCount = new ConcurrentDictionary<string, int>();
-        private readonly ConcurrentQueue<Job> jobQueue = new ConcurrentQueue<Job>();
-        private readonly int numWorkers = 8;
+        // todo: fixed length jobqueue?, the maxsize of the queue should be limited to prevent memory overload
+        // TODO: check whether performance for TPLDataflow and Channels are greater. (TPL should have higher throughput, but Channels faster init) they also both have capacity
+        // DONE: make sure that enqueue (both filename and content) are pointers to those values. capacity of jobQueue should hence be Job (JobType, *,*)
+        
+        private readonly ConcurrentDictionary<string, int> _wordCount = new ConcurrentDictionary<string, int>();
+        private readonly ConcurrentQueue<Job> _jobQueue = queueType switch
+        {
+            QueueType.ConcurrentQueue => new ConcurrentQueue<Job>(),
+            // _ => new TPLDataflow(), // Implement other queue 
+            _ => throw new ArgumentException("Unsupported queue type")
+        };
 
         // Lock for filesProcessed
-        private readonly object filesProcessedLock = new object();
-        private int totalFiles = 0; 
-        private int filesProcessed = 0;
+        private readonly object _filesProcessedLock = new object();
+        private int _totalFiles = 0; 
+        private int _filesProcessed = 0;
+        // Error variable returning that there was an error instead of crashing the program.
+        private bool _errorOccured = false;
 
         /// <summary>
         /// Asynchronously processes files by reading them in chunks and enqueuing the content into a job queue.
@@ -39,13 +53,12 @@ namespace WordCounter
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task ProcessFilesAsync(IEnumerable<string> fileNames)
         {
-            this.totalFiles = fileNames.Count();
-            // Console.WriteLine(this.totalFiles);
-
+            var enumerable = fileNames as string[] ?? fileNames.ToArray();
+            this._totalFiles = enumerable.Count();
             // Enqueue file read jobs into the job queue
-            foreach (var fileName in fileNames)
+            foreach (var fileName in enumerable)
             {
-                jobQueue.Enqueue(new Job { Type = JobType.FileRead, FileName = fileName });
+                _jobQueue.Enqueue(new Job { Type = JobType.FileRead, FileName = fileName });
             }
 
             // Spawn worker tasks
@@ -56,11 +69,12 @@ namespace WordCounter
             }
 
             // Wait for all worker tasks to complete
-            
             await Task.WhenAll(workerTasks);
 
             // All workers have completed processing
-            Console.WriteLine("Word counting completed:");
+            Console.WriteLine(_errorOccured
+                ? $"Word counting completed with errors, see {logFile} for specifics. Printing count from successful files:"
+                : "Word counting completed without errors:");
             PrintWordCounts();
         }
 
@@ -79,11 +93,11 @@ namespace WordCounter
                 // Dequeue a job from the job queue
                 // DONE: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
                 Job? job;
-                lock (this.filesProcessedLock)
+                lock (this._filesProcessedLock)
                 {
                     // Console.WriteLine($"Processed {this.filesProcessed}" );
                     // Console.WriteLine(this.totalFiles);
-                    if (!jobQueue.TryDequeue(out job) && this.filesProcessed >= this.totalFiles)
+                    if (!_jobQueue.TryDequeue(out job) && this._filesProcessed >= this._totalFiles)
                     {
                         break;
                     }
@@ -93,22 +107,24 @@ namespace WordCounter
                 {
                     case JobType.FileRead:
                         if (job.FileName == null) {
-                            // TODO log error and continue to next file
+                            // DONE log error and continue to next file
+                            LogError("File name is null");
                             break;
                         } else {
                             await ProcessFileAsync(job.FileName);
                             // update the filesProcessed class var 
-                            lock (this.filesProcessedLock) {
-                                this.filesProcessed++;
+                            lock (this._filesProcessedLock) {
+                                this._filesProcessed++;
                             }
                             break;
                         }
                     case JobType.WordProcess:
                         if (job.Content == null) {
-                            // TODO log error and continue to next file
+                            // DONE log error and continue to next file
+                            LogError("Content is null");
                             break;
                         } else {
-                            await ProcessWords(job.Content);
+                            ProcessWords(job.Content);
                             break;
                         }
                 }
@@ -126,25 +142,38 @@ namespace WordCounter
             {
                 // Open the file for reading
                 // DONE enqueue chunks of file instaed of the whole file. So it needs to read x amount of bytes, enqueue that content, then continue to next chunk of the file
-                using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                byte[] buffer = new byte[CHUNKSIZE];
+                // using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                // byte[] buffer = new byte[CHUNKSIZE+100];
+
+                using StreamReader sr = new StreamReader(fileName);
+                var buffer = new Char[chunkSize+longestWord];
+                // Console.WriteLine($"Basestream {sr.BaseStream.Length}");
                 int bytesRead;
 
-                // Read the file in chunks until the end is reached
-                // TODO check that it splits on space such that words dont get split
-                while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                string trailingWord = "";
+                while (true )
                 {
-                    // TODO: trailing bytes cannot be allowed to be non-zero, stop beforehand or rollback the fileStream pointer
+                    bytesRead = await sr.ReadBlockAsync(buffer, 0, chunkSize);
+                    if (bytesRead == 0)
+                    {
+                        _jobQueue.Enqueue(new Job { Type = JobType.WordProcess, Content = trailingWord });
+                        break;
+                    }
                     // Convert the read bytes to string (assuming UTF-8 encoding)
-                    string contentChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    string contentChunk = new string(buffer, 0, bytesRead);
 
-                    // Enqueue word processing job with file content chunk
-                    jobQueue.Enqueue(new Job { Type = JobType.WordProcess, Content = contentChunk });
+                    // Append the trailing word from the previous iteration
+                    contentChunk = trailingWord + contentChunk;
+
+                    (trailingWord,contentChunk) = CutWord(contentChunk);
+                    // Enqueue word processing job with processed content
+                    _jobQueue.Enqueue(new Job { Type = JobType.WordProcess, Content = contentChunk });
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error reading file '{fileName}': {ex.Message}");
+                LogError($"Error reading file '{fileName}': {ex.Message}");
+                // Console.WriteLine($"Error reading file '{fileName}': {ex.Message}");
             }
         }
 
@@ -154,7 +183,7 @@ namespace WordCounter
         /// </summary>
         /// <param name="content">The input text content to be processed.</param>
         /// <returns>void</returns>
-        private async Task ProcessWords(string content)
+        private void ProcessWords(string content)
         {
             string[] words = Regex.Split(content, @"\W+")
                                   .Where(word => !string.IsNullOrEmpty(word))
@@ -167,21 +196,21 @@ namespace WordCounter
             // Update word count in the local dictionary
             foreach (string word in words)
             {
-                if (localWordCount.ContainsKey(word))
+                if (!localWordCount.TryAdd(word, 1))
                 {
                     localWordCount[word]++;
-                }
-                else
-                {
-                    localWordCount[word] = 1;
                 }
             }
 
             // Merge local word counts into the global word count dictionary
-            // TODO: lock for the whole loop to only do 1 lock/unlock, then do an async task to allow thread to pool if blocked
-            foreach (var entry in localWordCount)
+            // DONE: lock for the whole loop to only do 1 lock/unlock, then do an async task to allow thread to pool if blocked
+            lock (_wordCount)
             {
-                wordCount.AddOrUpdate(entry.Key, entry.Value, (key, oldValue) => oldValue + entry.Value);
+                // Update the global word count dictionary
+                foreach (var entry in localWordCount)
+                {
+                    _wordCount.AddOrUpdate(entry.Key, entry.Value, (key, oldValue) => oldValue + entry.Value);
+                }
             }
         }
 
@@ -189,12 +218,11 @@ namespace WordCounter
         /// Prints the word counts stored in the global dictionary to the console, sorted by word (key).
         /// Format: "Count: Word", eg. "2: hello"
         /// </summary>
-        public void PrintWordCounts()
+        private void PrintWordCounts()
         {
-            // TODO: dont orderby?
             //foreach (var pair in wordCount.OrderBy(pair => pair.Key))
             
-            foreach (var pair in wordCount.OrderByDescending(pair => pair.Value))
+            foreach (var pair in _wordCount.OrderByDescending(pair => pair.Value))
             {
                 Console.WriteLine($"{pair.Value}: {pair.Key}");
             }
@@ -204,7 +232,46 @@ namespace WordCounter
         /// </summary>
         public ConcurrentDictionary<string, int> GetWordCounts()
         {
-            return this.wordCount; // Return the wordCount dictionary
+            return this._wordCount; // Return the wordCount dictionary
+        }
+
+        public (string,string) CutWord(string contentChunk) {
+            string trailingWord = "";
+            // Find the last space in the current chunk
+            int lastSpaceIndex = contentChunk.LastIndexOf(' ');
+            // space is the last byte/char
+            if (lastSpaceIndex+1 == contentChunk.Length)
+            {
+            }
+            else if (lastSpaceIndex != -1)
+            {
+                // Extract the trailing word
+                trailingWord = contentChunk.Substring(lastSpaceIndex + 1);
+                // Truncate the content chunk at the last space (exclusive)
+                contentChunk = contentChunk.Substring(0, lastSpaceIndex);
+            }
+            else
+            {
+                // No spaces found, the whole chunk is a single word
+                trailingWord = contentChunk;
+                contentChunk = "";
+            }
+            return (trailingWord , contentChunk) ;
+        }
+        private void LogError(string message)
+        {
+            this._errorOccured = true;
+            try
+            {
+                using (StreamWriter sw = File.AppendText(logFile))
+                {
+                    sw.WriteLine($"[{DateTime.Now}] ERROR: {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing to log file: {ex.Message}");
+            }
         }
     }
 }

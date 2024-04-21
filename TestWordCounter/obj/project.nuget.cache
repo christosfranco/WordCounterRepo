@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "p33/w56VvCHE53/o68Qbm23QI4IS+/c0D8GqKZsRZ7MyVWW3u4qZJx8uinFAV/0gUdOEVFoZcOR2Gkxx21fWaw==",
+  "dgSpecHash": "c8HAQP+xxNU0EZDoVuXB+Hk3Pz/62IHbFr5DamHqwY9B4q9SIf+h/Rv81mNjaRN90w4N4QoZJqllBg3TrrVcnw==",
   "success": true,
-  "projectFilePath": "E:\\WordCounterRepo\\TestWordCounter\\TestWordCounter.csproj",
+  "projectFilePath": "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/TestWordCounter.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Christian\\.nuget\\packages\\coverlet.collector\\6.0.2\\coverlet.collector.6.0.2.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\microsoft.codecoverage\\17.9.0\\microsoft.codecoverage.17.9.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\microsoft.net.test.sdk\\17.9.0\\microsoft.net.test.sdk.17.9.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.9.0\\microsoft.testplatform.objectmodel.17.9.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\microsoft.testplatform.testhost\\17.9.0\\microsoft.testplatform.testhost.17.9.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\nunit\\4.1.0\\nunit.4.1.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\nunit.analyzers\\4.1.0\\nunit.analyzers.4.1.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\nunit3testadapter\\4.5.0\\nunit3testadapter.4.5.0.nupkg.sha512",
-    "C:\\Users\\Christian\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
+    "/home/christos/.nuget/packages/coverlet.collector/6.0.2/coverlet.collector.6.0.2.nupkg.sha512",
+    "/home/christos/.nuget/packages/microsoft.codecoverage/17.9.0/microsoft.codecoverage.17.9.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/microsoft.net.test.sdk/17.9.0/microsoft.net.test.sdk.17.9.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/microsoft.testplatform.objectmodel/17.9.0/microsoft.testplatform.objectmodel.17.9.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/microsoft.testplatform.testhost/17.9.0/microsoft.testplatform.testhost.17.9.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/home/christos/.nuget/packages/nunit/4.1.0/nunit.4.1.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/nunit.analyzers/4.1.0/nunit.analyzers.4.1.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/nunit3testadapter/4.5.0/nunit3testadapter.4.5.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/system.reflection.metadata/1.6.0/system.reflection.metadata.1.6.0.nupkg.sha512"
   ],
   "logs": []
 }

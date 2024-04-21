@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "68NtBBwTgQW8ynxsT5/7+WKq/daWlkthv0flBaS8WNaBfLzkDfdfBCSSF2KR8lgv5Kao9Kvg7nfn4F5/jS+6yA==",
+  "dgSpecHash": "I82BGGtHj8D5rhQFyzIDiJQbGwykBb3qM433zFMr11b7EeK2N+Nnt6S5SovYFB/xf+4Vj7oGxoYowA157cGMsg==",
   "success": true,
-  "projectFilePath": "E:\\WordCounterRepo\\WordCounter\\WordCounter.csproj",
+  "projectFilePath": "/home/christos/Simcorp/WordCounterRepo/WordCounter/WordCounter.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -31,9 +31,22 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Change working directory to WordCounter
       run: |
-        cd WordCounter      
+        cd WordCounter
         ls
         dotnet restore
-        dotnet test --no-restore --verbosity normal
         dotnet build --configuration Release --no-restore
-        dotnet test --configuration Release --no-restore --verbosity normal
+
+    - name: Run SmokeTests tests
+      run: |
+        cd WordCounter
+        dotnet test --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~TestWordCounter.SmokeTests" 
+
+    - name: Run UnitTests tests
+      run: |
+        cd WordCounter
+        dotnet test --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~TestWordCounter.UnitTests" 
+
+    - name: Run IntegrationTests tests
+      run: |
+        cd WordCounter
+        dotnet test --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~TestWordCounter.IntegrationTests" 

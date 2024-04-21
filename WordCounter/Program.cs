@@ -1,4 +1,4 @@
-﻿class Program
+﻿public class Program
 {
     static async Task Main(string[] args)
     {
@@ -9,8 +9,9 @@
         }
 
         var fileNames = args;
-
-        var wordCounter = new WordCounter.WordCounter();
+        // DONE: log.txt default, add optional for multiple log file specification
+        // DONE give input which queue type, workers, chunksize
+        var wordCounter = new WordCounter.WordCounter(numWorkers: 8, longestWord: 50);
         await wordCounter.ProcessFilesAsync(fileNames);
     }
 }

@@ -1,8 +1,24 @@
 {
   "profiles": {
-    "WordCounter": {
+    "WordCounterWindows": {
       "commandName": "Project",
-      "commandLineArgs": "..\\..\\..\\..\\TestWordCounter\\SmokeTests\\file1.txt ..\\..\\..\\..\\TestWordCounter\\SmokeTests\\file2.txt"
+      "commandLineArgs": "..\\..\\..\\..\\TestWordCounter\\SmokeTests\\file1.txt ..\\..\\..\\..\\TestWordCounter\\SmokeTests\\file2.txt",
+      "osx": {
+        "executablePath": "",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
+    },
+    "WordCounterLinux": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../../TestWordCounter/SmokeTests/file1.txt ../../../../TestWordCounter/SmokeTests/file2.txt",
+      "osx": {
+        "executablePath": "",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
     },
     "WSL": {
       "commandName": "WSL2",

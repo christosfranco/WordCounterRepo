@@ -36,21 +36,10 @@ Example Unix:
 ```
 dotnet run --configuration Release ../TestWordCounter/TestFiles/file1.txt ../TestWordCounter/TestFiles/file2.txt 
 ```
-
+These examples are default and part of IDE configuration (choose appropiate)
 # Run build-in tests:
 ```
 dotnet test --configuration Release --no-restore --verbosity normal
-```
-
-
-# Utilizing testing pipeline
-For documentation and purpose of the code that I have written for other developers looking at it. (aswell as myself when i return to the codebase)
-Compile, run, and test the solution. Pipeline can also be ran directly through the github actions interface on [Github actions link](https://github.com/christosfranco/WordCounterRepo/actions)
-Or through a local program such as "act" (macOS/linux) "act-cli" (windows).
-
-To run the github actions pipeline:
-```
-sudo act -W .github/workflows/github-actions-build-and-test.yml
 ```
 
 # Summary of system
@@ -66,4 +55,12 @@ ProcessWords Method: dequeues chunk from job queue into words, and updates word 
 ![Alt Text](diagram-export-4-19-2024-4_41_03-PM.png)
 
 
+# Utilizing testing pipeline
+For documentation and purpose of the code that I have written for other developers looking at it. (aswell as myself when i return to the codebase)
+Compile, run, and test the solution. Pipeline can also be ran directly through the github actions interface on [Github actions link](https://github.com/christosfranco/WordCounterRepo/actions)
+Or through a local program such as "act" (macOS/linux) "act-cli" (windows).
 
+To run the github actions pipeline:
+```
+sudo act -W .github/workflows/github-actions-build-and-test.yml
+```
