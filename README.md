@@ -54,7 +54,7 @@ ProcessWords Method: dequeues chunk from job queue into words, and updates word 
 
 ![Components Text](diagram-export-4-19-2024-4_41_03-PM.png)
 
-![Sequence Diagram](diagram-export-4-19-2024-4_41_03-PM.png)
+![Sequence Diagram](WordcounterUML.drawio.png)
 
 # Utilizing testing pipeline
 For documentation and purpose of the code that I have written for other developers looking at it. (aswell as myself when i return to the codebase)
