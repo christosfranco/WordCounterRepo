@@ -1,0 +1,178 @@
+<mxfile host="app.diagrams.net" modified="2024-04-21T17:18:24.537Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="bCOeVAFeiwTWiP9ouc7k" version="24.2.7" type="device">
+  <diagram name="Side-1" id="oTTtlojiL8l6WzHwBe9r">
+    <mxGraphModel dx="1248" dy="-76" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-25" value="WordCounter" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="20" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-26" value="jobQueue" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="295" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-27" value="WorkerAsync" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="495" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-30" value="ProcessFileAsync" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-31" value="FileStream" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-33" value="Dictionary" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-34" value="Console" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="1640" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-35" value="loop" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=40" vertex="1" parent="1">
+          <mxGeometry x="246" y="1347" width="248" height="158" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-36" value="[for each fileName]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="Z73Jn3l_7CpgKxPlknMw-35">
+          <mxGeometry x="40" width="208" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-37" value="loop [until end of file]" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#B3B3B3;height=20;width=40" vertex="1" parent="1">
+          <mxGeometry x="360" y="1717" width="950" height="254" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-39" value="loop [until jobQueue is empty] [Job.Type == FileRead] " style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#d6b656;height=35;width=50;fillColor=#fff2cc;opacity=80;labelBackgroundColor=#FFD966;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1515" width="980" height="465" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-43" value="ProcessFilesAsync(fileNames)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-25" target="Z73Jn3l_7CpgKxPlknMw-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="243" y="1327" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-44" value="Enqueue(FileReadJob(fileName))" style="curved=1;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-26" target="Z73Jn3l_7CpgKxPlknMw-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="1425" />
+              <mxPoint x="420" y="1455" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-45" value="Dequeue(Job)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-26" target="Z73Jn3l_7CpgKxPlknMw-27">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="1593" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-46" value="ProcessFileAsync(fileName)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-27" target="Z73Jn3l_7CpgKxPlknMw-30">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="1645" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-47" value="Open(fileName)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1160" y="1680" />
+            </Array>
+            <mxPoint x="1080" y="1680" as="sourcePoint" />
+            <mxPoint x="1290" y="1680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-48" value="ReadBlockAsync(buffer)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="1290" y="1770" as="sourcePoint" />
+            <mxPoint x="1084.5" y="1770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-51" value="Enqueue(WordProcessJob(contentChunk))" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-30" target="Z73Jn3l_7CpgKxPlknMw-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="1951" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-55" value="UpdateWordCount(words)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-66" target="Z73Jn3l_7CpgKxPlknMw-33">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="988" y="2225" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-57" value="PrintWordCounts()" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-25" target="Z73Jn3l_7CpgKxPlknMw-34">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1088" y="2339" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-60" value="contentChunkProcess" style="curved=1;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-30" target="Z73Jn3l_7CpgKxPlknMw-30">
+          <mxGeometry x="-0.1276" y="-3" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1150" y="1860" />
+              <mxPoint x="1180" y="1870" />
+              <mxPoint x="1160" y="1890" />
+            </Array>
+            <mxPoint x="1170" y="1860" as="sourcePoint" />
+            <mxPoint x="1170" y="1890" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-61" value="GetString(buffer)" style="curved=1;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-30" target="Z73Jn3l_7CpgKxPlknMw-30">
+          <mxGeometry x="-0.1296" y="-3" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1155" y="1817" />
+              <mxPoint x="1185" y="1827" />
+              <mxPoint x="1165" y="1847" />
+            </Array>
+            <mxPoint x="1080" y="1820" as="sourcePoint" />
+            <mxPoint x="1080" y="1840" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-62" value="loop [until jobQueue is empty] [Job.Type == WordProcess] " style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#d6b656;height=35;width=50;fillColor=#fff2cc;opacity=80;labelBackgroundColor=#FFD966;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="2000" width="980" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-63" value="ProcessWords(contentChunk)" style="curved=1;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-66" target="Z73Jn3l_7CpgKxPlknMw-66">
+          <mxGeometry x="0.0769" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="2130" />
+              <mxPoint x="890" y="2160" />
+            </Array>
+            <mxPoint x="840" y="2130" as="sourcePoint" />
+            <mxPoint x="840" y="2160" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-64" value="Dequeue(Job)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="2060" />
+            </Array>
+            <mxPoint x="370" y="2060" as="sourcePoint" />
+            <mxPoint x="570" y="2060" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-65" value="Workers dequeue jobs&#xa;for processing" style="fillColor=#ffff88;strokeColor=#9E916F;" vertex="1" parent="1">
+          <mxGeometry x="222.5" y="1466" width="295" height="49" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-66" value="ProcessWords" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
+          <mxGeometry x="760" y="1220" width="150" height="1224" as="geometry" />
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-67" value="ProcessWords(contentChunk)" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" target="Z73Jn3l_7CpgKxPlknMw-66">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="570" y="2090" as="sourcePoint" />
+            <mxPoint x="820" y="2090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z73Jn3l_7CpgKxPlknMw-68" value="void" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="Z73Jn3l_7CpgKxPlknMw-66">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="2250" />
+            </Array>
+            <mxPoint x="780" y="2250" as="sourcePoint" />
+            <mxPoint x="370" y="2250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
