@@ -30,11 +30,11 @@ dotnet run  --configuration Release [FILES]
 ```
 Example Windows:
 ```
-dotnet run --configuration Release ..\TestWordCounter\TestFiles\file1.txt ..\TestWordCounter\TestFiles\file2.txt 
+dotnet run --configuration Release ..\TestWordCounter\SmokeTests\file1.txt ..\TestWordCounter\SmokeTests\file2.txt 
 ```
 Example Unix:
 ```
-dotnet run --configuration Release ../TestWordCounter/TestFiles/file1.txt ../TestWordCounter/TestFiles/file2.txt 
+dotnet run --configuration Release ../TestWordCounter/SmokeTests/file1.txt ../TestWordCounter/SmokeTests/file2.txt 
 ```
 These examples are default and part of IDE configuration (choose appropiate)
 # Run build-in tests:
