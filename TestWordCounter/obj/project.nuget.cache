@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "c8HAQP+xxNU0EZDoVuXB+Hk3Pz/62IHbFr5DamHqwY9B4q9SIf+h/Rv81mNjaRN90w4N4QoZJqllBg3TrrVcnw==",
+  "dgSpecHash": "l3oPTTJPTDp3njbTzzABnLaaZ7KjTn91GEw2zA91bvWxlrGAbt3So7a37Y1LDpBa7a1+vcBmC9nhXoBv3ziDnw==",
   "success": true,
   "projectFilePath": "/home/christos/Simcorp/WordCounterRepo/TestWordCounter/TestWordCounter.csproj",
   "expectedPackageFiles": [
+    "/home/christos/.nuget/packages/commanddotnet/7.0.3/commanddotnet.7.0.3.nupkg.sha512",
     "/home/christos/.nuget/packages/coverlet.collector/6.0.2/coverlet.collector.6.0.2.nupkg.sha512",
     "/home/christos/.nuget/packages/microsoft.codecoverage/17.9.0/microsoft.codecoverage.17.9.0.nupkg.sha512",
+    "/home/christos/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/home/christos/.nuget/packages/microsoft.net.test.sdk/17.9.0/microsoft.net.test.sdk.17.9.0.nupkg.sha512",
     "/home/christos/.nuget/packages/microsoft.testplatform.objectmodel/17.9.0/microsoft.testplatform.objectmodel.17.9.0.nupkg.sha512",
     "/home/christos/.nuget/packages/microsoft.testplatform.testhost/17.9.0/microsoft.testplatform.testhost.17.9.0.nupkg.sha512",

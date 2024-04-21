@@ -2,6 +2,7 @@
 
 namespace TestWordCounter.SmokeTests
 {
+    
     internal class SmokeTest1
     {
 

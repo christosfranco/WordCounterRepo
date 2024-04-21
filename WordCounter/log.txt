@@ -1,0 +1,1 @@
+[4/21/2024 3:10:51 PM] ERROR: File '../TestWordCounter/TestFiles/file22.txt' does not exist.

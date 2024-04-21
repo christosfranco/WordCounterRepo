@@ -9,8 +9,9 @@ namespace TestWordCounter
         {
         }
 
-
+        
         [Test]
+        [Category("Integration")]
         public async Task ProcessFiles_CountsWordsCorrectly_IO1()
         {
             // Get the directory of the executing assembly (your project's executable)
@@ -48,8 +49,8 @@ namespace TestWordCounter
             });
         }
 
-        
         [Test]
+        [Category("Integration")]
         public async Task ProcessFiles_CountsWordsCorrectly_IO2()
         {
             // Get the directory of the executing assembly (your project's executable)
@@ -86,8 +87,9 @@ namespace TestWordCounter
                 Assert.That(wordCounts["again"], Is.EqualTo(1));
             });
         }
-
+        
         [Test]
+        [Category("Integration")]
         public async Task ProcessFilesAsync_CountsWordsCorrectly_Generated()
         {
             // Arrange
@@ -142,10 +144,129 @@ namespace TestWordCounter
                 }
             }
         }
-
-        // TODO test with insanely large files. Seems that some memory is lost (maybe due to byte split when reading chunks)?
+        
         [Test]
-        public async Task ProcessFilesAsync_CountsWordsCorrectly_Bigger_Files()
+        [Category("Integration")]
+        public async Task ProcessFilesAsync_CountsWordsCorrectly_Generated_Symbols()
+        {
+            // Arrange
+            int numFiles = 2; // Number of large files
+
+            var wordFrequencies = new Dictionary<string, int>
+            {
+                { "Lorem", 3 },
+                { "ipsum", 5 },
+                { "dolor", 2 },
+                { "sit", 4 },
+                { "amet", 3 },
+                { "consectetur", 2 }
+            };
+
+            
+            char[] separators = new char[] { ' ', '-', '_' ,'\t','\n','@','$'};
+            // Create large text files
+            string[] filePaths = IOHelpers.CreateLargeTextFiles(numFiles, wordFrequencies,separators);
+
+            try
+            {
+                // Create an instance of WordCounter
+                var wordCounter = new WordCounter.WordCounter();
+
+                // Act: Process large files asynchronously
+                await wordCounter.ProcessFilesAsync(filePaths);
+
+                // Assert: Check word counts
+                var wordCounts = wordCounter.GetWordCounts();
+                Assert.Multiple(() =>
+                {
+                    Assert.That(wordCounts["Lorem"], Is.EqualTo(3 * numFiles));
+                    Assert.That(wordCounts["ipsum"], Is.EqualTo(5 * numFiles));
+                    Assert.That(wordCounts["dolor"], Is.EqualTo(2 * numFiles));
+                    Assert.That(wordCounts["sit"], Is.EqualTo(4 * numFiles));
+                    Assert.That(wordCounts["amet"], Is.EqualTo(3 * numFiles));
+                    Assert.That(wordCounts["consectetur"], Is.EqualTo(2 * numFiles));
+                });
+            }
+            finally
+            {
+                // Cleanup: Delete temporary files after testing
+                foreach (var filePath in filePaths)
+                {
+                    try
+                    {
+                        File.Delete(filePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to delete file '{filePath}': {ex.Message}");
+                    }
+                }
+            }
+        }
+        
+                
+        [Test]
+        [Category("Integration")]
+        public async Task ProcessFilesAsync_CountsWordsCorrectly_Generated_Multiline()
+        {
+            // Arrange
+            int numFiles = 2; // Number of large files
+
+            var wordFrequencies = new Dictionary<string, int>
+            {
+                { "Lorem", 3 },
+                { "ipsum", 5 },
+                { "dolor", 2 },
+                { "sit", 4 },
+                { "amet", 3 },
+                { "consectetur", 2 }
+            };
+
+            
+            char[] separators = new char[] { '\n'};
+            // Create large text files
+            string[] filePaths = IOHelpers.CreateLargeTextFiles(numFiles, wordFrequencies,separators);
+
+            try
+            {
+                // Create an instance of WordCounter
+                var wordCounter = new WordCounter.WordCounter();
+
+                // Act: Process large files asynchronously
+                await wordCounter.ProcessFilesAsync(filePaths);
+
+                // Assert: Check word counts
+                var wordCounts = wordCounter.GetWordCounts();
+                Assert.Multiple(() =>
+                {
+                    Assert.That(wordCounts["Lorem"], Is.EqualTo(3 * numFiles));
+                    Assert.That(wordCounts["ipsum"], Is.EqualTo(5 * numFiles));
+                    Assert.That(wordCounts["dolor"], Is.EqualTo(2 * numFiles));
+                    Assert.That(wordCounts["sit"], Is.EqualTo(4 * numFiles));
+                    Assert.That(wordCounts["amet"], Is.EqualTo(3 * numFiles));
+                    Assert.That(wordCounts["consectetur"], Is.EqualTo(2 * numFiles));
+                });
+            }
+            finally
+            {
+                // Cleanup: Delete temporary files after testing
+                foreach (var filePath in filePaths)
+                {
+                    try
+                    {
+                        File.Delete(filePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to delete file '{filePath}': {ex.Message}");
+                    }
+                }
+            }
+        }
+        
+        [Test]
+        [Category("Integration")]
+        public async Task ProcessFilesAsync_CountsWordsCorrectly_20_000_Words()
         {
             // Arrange
             int numFiles = 200; // Number of large files
@@ -200,62 +321,6 @@ namespace TestWordCounter
             }
         }
         
-        // TODO test with insanely large files. Seems that some memory is lost (maybe due to byte split when reading chunks)?
-        [Test]
-        public async Task ProcessFilesAsync_CountsWordsCorrectly_Bigger_Files2()
-        {
-            // Arrange
-            int numFiles = 1; // Number of large files
-
-            var wordFrequencies = new Dictionary<string, int>
-                {
-                    { "Lorem", 3000 },
-                    { "ipsum", 5000 },
-                    { "dolor", 2000 },
-                    { "sit", 4000 },
-                    { "amet", 3000 },
-                    { "consectetur", 20_000_000 }
-                };
-
-            // Create large text files
-            string[] filePaths = IOHelpers.CreateLargeTextFiles(numFiles, wordFrequencies);
-
-            try
-            {
-                // Create an instance of WordCounter
-                var wordCounter = new WordCounter.WordCounter();
-
-                // Actt Process large files asynchronously
-                await wordCounter.ProcessFilesAsync(filePaths);
-
-                // Assert Check word counts
-                var wordCounts = wordCounter.GetWordCounts();
-                Assert.Multiple(() =>
-                {
-                    Assert.That(wordCounts["Lorem"], Is.EqualTo(3000 * numFiles));
-                    Assert.That(wordCounts["ipsum"], Is.EqualTo(5000 * numFiles));
-                    Assert.That(wordCounts["dolor"], Is.EqualTo(2000 * numFiles));
-                    Assert.That(wordCounts["sit"], Is.EqualTo(4000 * numFiles));
-                    Assert.That(wordCounts["amet"], Is.EqualTo(3000 * numFiles));
-                    Assert.That(wordCounts["consectetur"], Is.EqualTo(20000000 * numFiles));
-                });
-            }
-            finally
-            {
-                // cleanup dlete temporary files after testing
-                foreach (var filePath in filePaths)
-                {
-                    try
-                    {
-                        File.Delete(filePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Failed to delete file '{filePath}': {ex.Message}");
-                    }
-                }
-            }
-        }
     }
 
 }

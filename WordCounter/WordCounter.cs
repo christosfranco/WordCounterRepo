@@ -58,22 +58,33 @@ namespace WordCounter
             // Enqueue file read jobs into the job queue
             foreach (var fileName in enumerable)
             {
-                _jobQueue.Enqueue(new Job { Type = JobType.FileRead, FileName = fileName });
+                if (File.Exists(fileName))
+                {
+                    _jobQueue.Enqueue(new Job { Type = JobType.FileRead, FileName = fileName });
+                }
+                else
+                {
+                    _errorOccured = true;
+                    LogError($"File '{fileName}' does not exist.");
+                }
             }
 
-            // Spawn worker tasks
-            List<Task> workerTasks = new List<Task>();
-            for (int i = 0; i < numWorkers; i++)
+            if (!_errorOccured)
             {
-                workerTasks.Add(WorkerAsync());
-            }
+                // Spawn worker tasks
+                List<Task> workerTasks = new List<Task>();
+                for (int i = 0; i < numWorkers; i++)
+                {
+                    workerTasks.Add(WorkerAsync());
+                }
 
-            // Wait for all worker tasks to complete
-            await Task.WhenAll(workerTasks);
+                // Wait for all worker tasks to complete
+                await Task.WhenAll(workerTasks);
+            }
 
             // All workers have completed processing
             Console.WriteLine(_errorOccured
-                ? $"Word counting completed with errors, see {logFile} for specifics. Printing count from successful files:"
+                ? $"Word counting completed with errors, see {logFile} for specifics."
                 : "Word counting completed without errors:");
             PrintWordCounts();
         }
@@ -102,6 +113,8 @@ namespace WordCounter
                         break;
                     }
                 }
+                
+                var buffer = new Char[chunkSize+longestWord];
 
                 switch (job?.Type)
                 {
@@ -109,9 +122,16 @@ namespace WordCounter
                         if (job.FileName == null) {
                             // DONE log error and continue to next file
                             LogError("File name is null");
+                            // treat a failed filename as a processed file
+                            lock (this._filesProcessedLock)
+                            {
+                                this._filesProcessed++;
+                            }
                             break;
                         } else {
-                            await ProcessFileAsync(job.FileName);
+                            
+                            using StreamReader sr = new StreamReader(job.FileName);
+                            await ProcessFileAsync(job.FileName,buffer,sr);
                             // update the filesProcessed class var 
                             lock (this._filesProcessedLock) {
                                 this._filesProcessed++;
@@ -135,18 +155,13 @@ namespace WordCounter
         /// Asynchronously reads a file in chunks and enqueues the file content for word processing.
         /// </summary>
         /// <param name="fileName">The name of the file to be processed.</param>
+        /// <param name="buffer">Char[] buffer to store bytes read from StreamReader sr</param>
+        /// <param name="sr">StreamReader, reads _contentSize into buffer</param>
         /// <returns>A task representing the asynchronous operation of processing the file.</returns>
-        private async Task ProcessFileAsync(string fileName)
+        private async Task ProcessFileAsync(string fileName,Char[] buffer,StreamReader sr)
         {
             try
             {
-                // Open the file for reading
-                // DONE enqueue chunks of file instaed of the whole file. So it needs to read x amount of bytes, enqueue that content, then continue to next chunk of the file
-                // using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                // byte[] buffer = new byte[CHUNKSIZE+100];
-
-                using StreamReader sr = new StreamReader(fileName);
-                var buffer = new Char[chunkSize+longestWord];
                 // Console.WriteLine($"Basestream {sr.BaseStream.Length}");
                 int bytesRead;
 
@@ -185,10 +200,9 @@ namespace WordCounter
         /// <returns>void</returns>
         private void ProcessWords(string content)
         {
-            string[] words = Regex.Split(content, @"\W+")
-                                  .Where(word => !string.IsNullOrEmpty(word))
-                                //   .Select(word => word.ToLower())
-                                  .ToArray();
+            string[] words = Regex.Split(content, @"[\W_]+")
+                .Where(word => !string.IsNullOrEmpty(word))
+                .ToArray();
 
             // Create a local dictionary to accumulate word counts
             Dictionary<string, int> localWordCount = new Dictionary<string, int>();
