@@ -11,7 +11,6 @@ namespace TestWordCounter.SmokeTests
         {
         }
 
-
         [Test]
         public async Task ProcessFiles_CountsWordsCorrectly()
         {

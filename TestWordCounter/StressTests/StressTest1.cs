@@ -40,7 +40,7 @@ public class StressTest1
 
         }
         
-        // 1.600 GB
+        // 1.6 GB file
         [Test]
         [Ignore("Skipping stresstest, Memory overload ")]
         public async Task ProcessFilesAsync_CountsWordsCorrectly_200Mil_Words()
@@ -63,12 +63,22 @@ public class StressTest1
 
             try
             {
+                
+                Console.WriteLine("Starting WordCounter init");  
                 // Create an instance of WordCounter
-                var wordCounter = new WordCounter.WordCounter();
-
+                var wordCounter = new WordCounter.WordCounter(numWorkers:8);
+                Console.WriteLine("Starting processing");               
+                // Start the timer
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 // Actt Process large files asynchronously
                 await wordCounter.ProcessFilesAsync(filePaths);
+                // Stop the timer
+                stopwatch.Stop();
+                // Get the elapsed time in milliseconds
+                long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
 
+                Console.WriteLine($"ProcessFilesAsync execution time: {elapsedMilliseconds} ms");
+                
                 // Assert Check word counts
                 var wordCounts = wordCounter.GetWordCounts();
                 Assert.Multiple(() =>
@@ -165,10 +175,10 @@ public class StressTest1
         public async Task ProcessFilesAsync_CountsWordsCorrectly_4_File_20MilWords_1Worker()
         {
             
-            // Start the timer
-            Stopwatch stopwatch = Stopwatch.StartNew();
             // Create an instance of WordCounter
             var wordCounter = new WordCounter.WordCounter(numWorkers:1);
+            // Start the timer
+            Stopwatch stopwatch = Stopwatch.StartNew();
             // Actt Process large files asynchronously
             await wordCounter.ProcessFilesAsync(_filePaths);
             // Stop the timer
@@ -197,10 +207,10 @@ public class StressTest1
         // [Ignore("stresstest")]
         public async Task ProcessFilesAsync_CountsWordsCorrectly_4_File_20MilWords_8Worker()
         {
-            // Start the timer
-            Stopwatch stopwatch = Stopwatch.StartNew();
             // Create an instance of WordCounter
             var wordCounter = new WordCounter.WordCounter(numWorkers:8);
+            // Start the timer
+            Stopwatch stopwatch = Stopwatch.StartNew();
             // Actt Process large files asynchronously
             await wordCounter.ProcessFilesAsync(_filePaths);
             // Stop the timer

@@ -20,8 +20,8 @@ namespace TestWordCounter
                 {
                     // Generate large random text content (for demonstration purposes)
                     string content = GenerateLoremIpsum(wordFrequencies,separators); 
-                    writer.Write(content);
                     writer.AutoFlush = true;
+                    writer.Write(content);
                     writer.Close();
                 }
                 filePaths[i] = filePath;

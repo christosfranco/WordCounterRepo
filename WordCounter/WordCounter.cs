@@ -99,6 +99,12 @@ namespace WordCounter
         /// <returns>A task representing the asynchronous operation of the worker.</returns>
         private async Task WorkerAsync()
         {
+                            
+            var buffer = new Char[chunkSize+longestWord];
+            // DONE make the dictionary here and only do 1 update
+            // Create a local dictionary to accumulate word counts
+            Dictionary<string, int> localWordCount = new Dictionary<string, int>();
+
             while (true)
             {
                 // Dequeue a job from the job queue
@@ -113,8 +119,6 @@ namespace WordCounter
                         break;
                     }
                 }
-                
-                var buffer = new Char[chunkSize+longestWord];
 
                 switch (job?.Type)
                 {
@@ -144,9 +148,20 @@ namespace WordCounter
                             LogError("Content is null");
                             break;
                         } else {
-                            ProcessWords(job.Content);
+                            ProcessWords(job.Content,localWordCount);
                             break;
                         }
+                }
+            }
+            // DONE: update the global dictionary with 1 update
+            // Merge local word counts into the global word count dictionary
+            // DONE: lock for the whole loop to only do 1 lock/unlock, then do an async task to allow thread to pool if blocked
+            lock (_wordCount)
+            {
+                // Update the global word count dictionary
+                foreach (var entry in localWordCount)
+                {
+                    _wordCount.AddOrUpdate(entry.Key, entry.Value, (key, oldValue) => oldValue + entry.Value);
                 }
             }
         }
@@ -198,14 +213,12 @@ namespace WordCounter
         /// </summary>
         /// <param name="content">The input text content to be processed.</param>
         /// <returns>void</returns>
-        private void ProcessWords(string content)
+        private void ProcessWords(string content,Dictionary<string, int> localWordCount )
         {
             string[] words = Regex.Split(content, @"[\W_]+")
                 .Where(word => !string.IsNullOrEmpty(word))
                 .ToArray();
 
-            // Create a local dictionary to accumulate word counts
-            Dictionary<string, int> localWordCount = new Dictionary<string, int>();
 
             // Update word count in the local dictionary
             foreach (string word in words)
@@ -213,17 +226,6 @@ namespace WordCounter
                 if (!localWordCount.TryAdd(word, 1))
                 {
                     localWordCount[word]++;
-                }
-            }
-
-            // Merge local word counts into the global word count dictionary
-            // DONE: lock for the whole loop to only do 1 lock/unlock, then do an async task to allow thread to pool if blocked
-            lock (_wordCount)
-            {
-                // Update the global word count dictionary
-                foreach (var entry in localWordCount)
-                {
-                    _wordCount.AddOrUpdate(entry.Key, entry.Value, (key, oldValue) => oldValue + entry.Value);
                 }
             }
         }
