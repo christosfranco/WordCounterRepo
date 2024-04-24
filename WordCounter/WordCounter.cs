@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Channels;
 
 namespace WordCounter
 {
@@ -21,22 +20,95 @@ namespace WordCounter
     public enum QueueType
     {
         ConcurrentQueue,
+        Channels,
     }
 
-    public class WordCounter(QueueType queueType = QueueType.ConcurrentQueue, int numWorkers = 8, int chunkSize = 4096, int longestWord = 100, string logFile = "log.txt")
+    public interface IJobQueue<T>
     {
-        // TODO: preanalyze hardware / system / file size distribution
-        // todo: fixed length jobqueue?, the maxsize of the queue should be limited to prevent memory overload
-        // TODO: check whether performance for TPLDataflow and Channels are greater. (TPL should have higher throughput, but Channels faster init) they also both have capacity
-        // DONE: make sure that enqueue (both filename and content) are pointers to those values. capacity of jobQueue should hence be Job (JobType, *,*)
-        
-        private readonly ConcurrentDictionary<string, int> _wordCount = new ConcurrentDictionary<string, int>();
-        private readonly ConcurrentQueue<Job> _jobQueue = queueType switch
+        void Enqueue(T item);
+        bool TryDequeue(out T item);
+        Task<T> DequeueAsync();
+    }
+    
+    public class ChannelJobQueue<T> : IJobQueue<T>
+    {
+        private readonly Channel<T> _channel;
+
+        public ChannelJobQueue(BoundedChannelOptions options)
         {
-            QueueType.ConcurrentQueue => new ConcurrentQueue<Job>(),
-            // _ => new TPLDataflow(), // Implement other queue 
-            _ => throw new ArgumentException("Unsupported queue type")
+            _channel = Channel.CreateBounded<T>(options);
+            
+        }
+
+        public void Enqueue(T item)
+        {
+            _channel.Writer.TryWrite(item);
+        }
+        public bool TryDequeue(out T job)
+        {
+            if (_channel.Reader.TryRead(out job))
+            {
+                return true; // Return the successfully read job
+            }
+            else
+            {
+                return false; // Return failure to read job
+            }
+        }
+        public async Task<T> DequeueAsync()
+        {
+            while (await _channel.Reader.WaitToReadAsync())
+            {
+                if (_channel.Reader.TryRead(out T item))
+                    return item;
+            }
+            throw new InvalidOperationException("No items to dequeue.");
+        }
+    }
+
+    public class ConcurrentQueueJobQueue<T> : IJobQueue<T>
+    {
+        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
+
+        public void Enqueue(T item)
+        {
+            _queue.Enqueue(item);
+        }
+        public bool TryDequeue(out T job)
+        {
+            // T job;
+            if (_queue.TryDequeue(out job))
+            {
+                return true; // Return the dequeued job
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Task<T> DequeueAsync()
+        {
+            if (_queue.TryDequeue(out T item))
+                return Task.FromResult(item);
+            throw new InvalidOperationException("No items to dequeue.");
+        }
+    }
+
+    public class WordCounter(QueueType queueType = QueueType.Channels, int numWorkers = 8, int chunkSize = 4096, int longestWord = 100, string logFile = "log.txt")
+    {
+        private readonly ConcurrentDictionary<string, int> _wordCount = new ConcurrentDictionary<string, int>();
+        
+        private static readonly BoundedChannelOptions Options = new BoundedChannelOptions(capacity:976562)
+        {
+            FullMode = BoundedChannelFullMode.Wait 
         };
+
+        private readonly IJobQueue<Job> _jobQueue = queueType switch
+        {
+            QueueType.Channels => new ChannelJobQueue<Job>(Options),
+            QueueType.ConcurrentQueue => new ConcurrentQueueJobQueue<Job>(),
+            _ => throw new ArgumentException("Unsupported queue type")
+        } ;
 
         // Lock for filesProcessed
         private readonly object _filesProcessedLock = new object();
@@ -101,19 +173,15 @@ namespace WordCounter
         {
                             
             var buffer = new Char[chunkSize+longestWord];
-            // DONE make the dictionary here and only do 1 update
             // Create a local dictionary to accumulate word counts
             Dictionary<string, int> localWordCount = new Dictionary<string, int>();
 
             while (true)
             {
-                // Dequeue a job from the job queue
-                // DONE: make sure that workers continue even while queue is empty if all files havent been read yet. Simple count and decrement when done?
+                // workers continue even while queue is empty if all files havent been read yet.
                 Job? job;
                 lock (this._filesProcessedLock)
                 {
-                    // Console.WriteLine($"Processed {this.filesProcessed}" );
-                    // Console.WriteLine(this.totalFiles);
                     if (!_jobQueue.TryDequeue(out job) && this._filesProcessed >= this._totalFiles)
                     {
                         break;
@@ -124,7 +192,6 @@ namespace WordCounter
                 {
                     case JobType.FileRead:
                         if (job.FileName == null) {
-                            // DONE log error and continue to next file
                             LogError("File name is null");
                             // treat a failed filename as a processed file
                             lock (this._filesProcessedLock)
@@ -133,7 +200,6 @@ namespace WordCounter
                             }
                             break;
                         } else {
-                            
                             using StreamReader sr = new StreamReader(job.FileName);
                             await ProcessFileAsync(job.FileName,buffer,sr);
                             // update the filesProcessed class var 
@@ -144,7 +210,6 @@ namespace WordCounter
                         }
                     case JobType.WordProcess:
                         if (job.Content == null) {
-                            // DONE log error and continue to next file
                             LogError("Content is null");
                             break;
                         } else {
@@ -153,12 +218,9 @@ namespace WordCounter
                         }
                 }
             }
-            // DONE: update the global dictionary with 1 update
             // Merge local word counts into the global word count dictionary
-            // DONE: lock for the whole loop to only do 1 lock/unlock, then do an async task to allow thread to pool if blocked
             lock (_wordCount)
             {
-                // Update the global word count dictionary
                 foreach (var entry in localWordCount)
                 {
                     _wordCount.AddOrUpdate(entry.Key, entry.Value, (key, oldValue) => oldValue + entry.Value);
@@ -237,8 +299,13 @@ namespace WordCounter
         private void PrintWordCounts()
         {
             //foreach (var pair in wordCount.OrderBy(pair => pair.Key))
+            //
+            // foreach (var pair in _wordCount.OrderByDescending(pair => pair.Value))
+            // {
+            //     Console.WriteLine($"{pair.Value}: {pair.Key}");
+            // }
             
-            foreach (var pair in _wordCount.OrderByDescending(pair => pair.Value))
+            foreach (var pair in _wordCount)
             {
                 Console.WriteLine($"{pair.Value}: {pair.Key}");
             }
@@ -274,6 +341,7 @@ namespace WordCounter
             }
             return (trailingWord , contentChunk) ;
         }
+        
         private void LogError(string message)
         {
             this._errorOccured = true;

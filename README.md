@@ -1,5 +1,6 @@
 # Problem Description
-Technical implementation based on the description given
+Technical implementation based on the description given.
+
 Description:
 ```
 Write and test a C# program that:
@@ -24,6 +25,7 @@ Given multiple text files, will count the occurrences of each unique word in the
 Dotnet version: dotnet-sdk-8.0.204
 
 Set-up and compile:
+Navigate to the WordCounter directory (or specify the project with dotnet).
 ```
 dotnet build --configuration Release --no-restore
 dotnet run  --configuration Release [FILES]
@@ -57,9 +59,8 @@ ProcessWords Method: dequeues chunk from job queue into words, and updates word 
 ![Sequence Diagram](WordcounterUML.drawio.png)
 
 # Utilizing testing pipeline
-For documentation and purpose of the code that I have written for other developers looking at it. (aswell as myself when i return to the codebase)
-Compile, run, and test the solution. Pipeline can also be ran directly through the github actions interface on [Github actions link](https://github.com/christosfranco/WordCounterRepo/actions)
-Or through a local program such as "act" (macOS/linux) "act-cli" (windows).
+For documentation and purpose of the code that I have written for other developers (aswell as myself when i return to the codebase)
+the pipeline will compile, run, and test the solution. Can also be executed directly through the github actions interface on [Github actions link](https://github.com/christosfranco/WordCounterRepo/actions), or through a local program such as "act" (macOS/linux) "act-cli" (windows).
 
 To run the github actions pipeline:
 ```

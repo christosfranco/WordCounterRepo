@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using NUnit.Framework.Internal;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
 
 namespace TestWordCounter.StressTests;
 
@@ -171,6 +173,7 @@ public class StressTest1
         
         // ~0.160*4 GB
         [Test]
+        [Benchmark]
         // [Ignore("stresstest")]
         public async Task ProcessFilesAsync_CountsWordsCorrectly_4_File_20MilWords_1Worker()
         {
@@ -204,6 +207,7 @@ public class StressTest1
         
         // ~0.160*4 GB
         [Test]
+        [Benchmark]
         // [Ignore("stresstest")]
         public async Task ProcessFilesAsync_CountsWordsCorrectly_4_File_20MilWords_8Worker()
         {

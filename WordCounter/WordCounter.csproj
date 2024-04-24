@@ -11,4 +11,10 @@
     <PackageReference Include="CommandDotNet" Version="7.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="BenchmarkDotNet">
+      <HintPath>..\..\..\.nuget\packages\benchmarkdotnet\0.13.12\lib\net8.0\BenchmarkDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -50,3 +50,8 @@ jobs:
       run: |
         cd WordCounter
         dotnet test --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~TestWordCounter.IntegrationTests" 
+
+    - name: Run StressTests tests
+      run: |
+        cd WordCounter
+        dotnet test --configuration Release --no-build --verbosity normal --filter "FullyQualifiedName~TestWordCounter.StressTests" 
